@@ -1,0 +1,94 @@
+products:
+  get:
+    summary: Get all products
+    operationId: getProducts
+    tags:
+      - Product
+    parameters:
+      - name: pageSize
+        in: query
+        description: How many products to return at one time (max 100)
+        required: false
+        schema:
+          type: integer
+          maximum: 100
+          format: int32
+      - name: pageToken
+        in: query
+        description: Page token
+        required: false
+        schema:
+          type: string
+    responses:
+      "200":
+        description: A paged array of products
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/product.yaml#/products"
+      default:
+        description: unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/error.yaml#/error"
+            examples:
+              unexpected_error:
+                $ref: "../components/examples/error.yaml#/unexpected_error"
+              overload_error:
+                $ref: "../components/examples/error.yaml#/overload_error"
+products_{productId}:
+  get:
+    summary: Get a specified product
+    operationId: getProductById
+    tags:
+      - Product
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        description: The id of the product
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "200":
+        description: Expected response to a valid request
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/product.yaml#/product"
+      default:
+        description: unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/error.yaml#/error"
+            examples:
+              unexpected_error:
+                $ref: "../components/examples/error.yaml#/unexpected_error"
+  delete:
+    summary: Cancel a specified product
+    operationId: deleteProductById
+    tags:
+      - Product
+    parameters:
+      - name: productId
+        in: path
+        required: true
+        description: The id of the product
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "201":
+        description: Null response.
+      default:
+        description: unexpected error
+        content:
+          application/json:
+            schema:
+              $ref: "../components/schemas/error.yaml#/error"
+            examples:
+              unexpected_error:
+                $ref: "../components/examples/error.yaml#/unexpected_error"

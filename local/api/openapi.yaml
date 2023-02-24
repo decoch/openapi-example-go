@@ -1,0 +1,177 @@
+openapi: 3.0.3
+info:
+  description: EC API
+  title: EC
+  version: 2023.1.1
+servers:
+- description: Online EC Example Service
+  url: http://example.com/v1
+tags:
+- description: Product Operation
+  name: Product
+paths:
+  /products:
+    get:
+      operationId: getProducts
+      parameters:
+      - description: How many products to return at one time (max 100)
+        in: query
+        name: pageSize
+        required: false
+        schema:
+          format: int32
+          maximum: 100
+          type: integer
+      - description: Page token
+        in: query
+        name: pageToken
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/products'
+          description: A paged array of products
+        default:
+          content:
+            application/json:
+              examples:
+                unexpected_error:
+                  $ref: '#/components/examples/unexpected_error'
+                  value: null
+                overload_error:
+                  $ref: '#/components/examples/overload_error'
+                  value: null
+              schema:
+                $ref: '#/components/schemas/error'
+          description: unexpected error
+      summary: Get all products
+      tags:
+      - Product
+  /products/{productId}:
+    delete:
+      operationId: deleteProductById
+      parameters:
+      - description: The id of the product
+        in: path
+        name: productId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "201":
+          description: Null response.
+        default:
+          content:
+            application/json:
+              examples:
+                unexpected_error:
+                  $ref: "#/components/examples/products_{productId}"
+                  value: null
+              schema:
+                $ref: '#/components/schemas/error'
+          description: unexpected error
+      summary: Cancel a specified product
+      tags:
+      - Product
+    get:
+      operationId: getProductById
+      parameters:
+      - description: The id of the product
+        in: path
+        name: productId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/product'
+          description: Expected response to a valid request
+        default:
+          content:
+            application/json:
+              examples:
+                unexpected_error:
+                  $ref: "#/components/examples/products_{productId}"
+                  value: null
+              schema:
+                $ref: '#/components/schemas/error'
+          description: unexpected error
+      summary: Get a specified product
+      tags:
+      - Product
+components:
+  examples:
+    unexpected_error:
+      summary: Unexpected error
+      value: |-
+        {
+          "code": "ERR90002",
+          "message": "we couldn't handle your request."
+        }
+    overload_error:
+      summary: Processing overload
+      value: |-
+        {
+          "code": "ERR90001",
+          "message": "we couldn't handle your request."
+        }
+  schemas:
+    product:
+      example:
+        localizedName: localizedName
+        imageUrl: imageUrl
+        name: name
+        id: 0
+      properties:
+        id:
+          format: int64
+          type: integer
+        name:
+          type: string
+        localizedName:
+          type: string
+        imageUrl:
+          type: string
+      required:
+      - id
+      - imageUrl
+      - localizedName
+      - name
+      type: object
+    products:
+      allOf:
+      - $ref: '#/components/schemas/page'
+      - $ref: '#/components/schemas/products_allOf'
+    error:
+      properties:
+        code:
+          format: int32
+          type: integer
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    page:
+      properties:
+        nextPageToken:
+          type: string
+      type: object
+    products_allOf:
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/product'
+          type: array
+      type: object
+      example: null

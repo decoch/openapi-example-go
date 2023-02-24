@@ -1,0 +1,24 @@
+openapi: "3.0.3"
+info:
+  version: 2023.1.1
+  title: EC
+  description: EC API
+servers:
+  - url: http://example.com/v1
+    description: Online EC Example Service
+tags:
+  - name: Product
+    description: Product Operation
+paths:
+  /products:
+    $ref: "./paths/products.yaml#/products"
+  /products/{productId}:
+    $ref: "./paths/products.yaml#/products_{productId}"
+components:
+  schemas:
+    product:
+      $ref: "./components/schemas/product.yaml#/product"
+    products:
+      $ref: "./components/schemas/product.yaml#/products"
+    error:
+      $ref: "./components/schemas/error.yaml#/error"

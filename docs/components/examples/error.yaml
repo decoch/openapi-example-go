@@ -1,0 +1,14 @@
+overload_error:
+  summary: Processing overload
+  value: |-
+    {
+      "code": "ERR90001",
+      "message": "we couldn't handle your request."
+    }
+unexpected_error:
+  summary: Unexpected error
+  value: |-
+    {
+      "code": "ERR90002",
+      "message": "we couldn't handle your request."
+    }
