@@ -1,14 +1,8 @@
+.openapi-generator-ignore
 Dockerfile
-README.md
 api/openapi.yaml
-go.mod
-go/api.go
+go/README.md
 go/api_product.go
-go/api_product_service.go
-go/error.go
-go/helpers.go
-go/impl.go
-go/logger.go
 go/model_error.go
 go/model_page.go
 go/model_product.go
